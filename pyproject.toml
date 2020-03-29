@@ -6,9 +6,9 @@ authors = ["warabanshi <warabanshi@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-python-daemon = "^2.2.4"
 pytumblr = "^0.1.0"
 wget = "^3.2"
+schedule = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

@@ -1,8 +1,10 @@
 import envs
 import pytumblr
 import wget
+import schedule
 import shutil
 import sqlite3
+import time
 import datetime, os
 
 # Authenticate via OAuth
@@ -32,7 +34,7 @@ def create_dir(dn):
         os.makedirs(dn)
 
 
-if __name__ == '__main__':
+def main():
     board = client.dashboard()
     
     photos = list(filter(lambda r: r["type"] == "photo", board["posts"]))
@@ -49,5 +51,17 @@ if __name__ == '__main__':
             url = r["original_size"]["url"]
             if url.split(".")[-1] in ["jpg", "jpeg", "png"]:
                 print(url)
-                fn = wget.download(url)
-                shutil.move(fn, dn)
+                try:
+                    fn = wget.download(url)
+                    shutil.move(fn, dn)
+                except Exception:
+                    print(f'exception occurred: url={url}')
+
+
+if __name__ == '__main__':
+
+    schedule.every(10).minutes.do(main)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
