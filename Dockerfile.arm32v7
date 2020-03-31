@@ -1,0 +1,17 @@
+FROM multiarch/alpine:armhf-edge
+
+ENV APPDIR /srv
+ENV STORE_DIR /storage
+
+WORKDIR ${APPDIR}
+
+RUN apk update
+RUN apk add python3 python3-dev py3-pip sqlite gcc musl-dev libffi-dev openssl-dev bash
+RUN pip3 install -U pip poetry
+
+COPY poetry.lock pyproject.toml ${APPDIR}/
+RUN poetry install -n
+
+COPY . ${APPDIR}/
+
+CMD ["./run.sh"]
